@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Desert Sandworm System — Official Documentation &amp; Technical Wiki</title>
+  <style>
+    :root {
+      --bg-base: #0b0d12;
+      --bg-surface: #121620;
+      --bg-elevated: #181d2a;
+      --bg-card: #151a26;
+      --bg-code: #0d1017;
+      --border-subtle: #252c3f;
+      --border-accent: #d99b38;
+      --text-primary: #eef1f7;
+      --text-secondary: #a8b2c7;
+      --text-muted: #6e7991;
+      --accent-gold: #e8a944;
+      --accent-gold-soft: rgba(232, 169, 68, 0.14);
+      --accent-amber: #f5c26b;
+      --accent-cyan: #4cc9f0;
+      --accent-cyan-soft: rgba(76, 201, 240, 0.12);
+      --accent-green: #3ddc97;
+      --accent-green-soft: rgba(61, 220, 151, 0.12);
+      --accent-purple: #b589f7;
+      --sidebar-width: 300px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      --font-mono: "Cascadia Code", "Consolas", "SFMono-Regular", Menlo, Monaco, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: radial-gradient(circle at 80% 0%, rgba(232, 169, 68, 0.06) 0%, transparent 45%), var(--bg-base);
+    }
+
+    /* Fixed Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background-color: var(--bg-surface);
+      border-right: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 24px 20px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: linear-gradient(180deg, rgba(232, 169, 68, 0.1) 0%, transparent 100%);
+    }
+
+    .brand-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-gold);
+      background: var(--accent-gold-soft);
+      border: 1px solid rgba(232, 169, 68, 0.35);
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .sidebar-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.25;
+    }
+
+    .sidebar-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .search-box {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 9px 12px;
+      background-color: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      color: var(--text-primary);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-gold);
+    }
+
+    .nav-list {
+      list-style: none;
+      padding: 14px 10px 28px;
+      flex: 1;
+    }
+
+    .nav-section-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      padding: 12px 12px 6px;
+    }
+
+    .nav-link {
+      display: block;
+      padding: 8px 12px;
+      margin: 2px 0;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 500;
+      border-radius: 6px;
+      border-left: 3px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .nav-link:hover {
+      background-color: var(--bg-elevated);
+      color: var(--text-primary);
+    }
+
+    .nav-link.active {
+      background-color: var(--accent-gold-soft);
+      color: var(--accent-amber);
+      border-left-color: var(--accent-gold);
+      font-weight: 600;
+    }
+
+    .nav-sublink {
+      padding-left: 24px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    /* Main Content Area */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      max-width: 1180px;
+      padding: 44px 56px 96px;
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, #1a2030 0%, #121622 60%, #1f1912 100%);
+      border: 1px solid var(--border-subtle);
+      border-left: 4px solid var(--accent-gold);
+      border-radius: 12px;
+      padding: 32px 36px;
+      margin-bottom: 40px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+
+    .hero-banner h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      color: var(--text-secondary);
+      max-width: 860px;
+      margin-bottom: 22px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background-color: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+
+    .stat-pill strong {
+      color: var(--accent-amber);
+    }
+
+    .stat-pill.perf strong {
+      color: var(--accent-green);
+    }
+
+    /* Section Styling */
+    .wiki-section {
+      margin-bottom: 58px;
+      scroll-margin-top: 28px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+    }
+
+    .section-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background-color: var(--accent-gold-soft);
+      border: 1px solid rgba(232, 169, 68, 0.4);
+      color: var(--accent-amber);
+      font-weight: 800;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent-amber);
+      margin: 28px 0 12px;
+    }
+
+    h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 18px 0 8px;
+    }
+
+    p {
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+      font-size: 15px;
+    }
+
+    ul, ol {
+      margin: 0 0 18px 22px;
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    li strong {
+      color: var(--text-primary);
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      background-color: var(--bg-code);
+      color: var(--accent-amber);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    pre {
+      background-color: var(--bg-code);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 18px 20px;
+      overflow-x: auto;
+      margin: 16px 0 22px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--accent-cyan);
+    }
+
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: inherit;
+    }
+
+    /* Callout / Tip Boxes */
+    .callout {
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 18px 0 22px;
+      border: 1px solid var(--border-subtle);
+      background-color: var(--bg-card);
+    }
+
+    .callout-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .callout p:last-child {
+      margin-bottom: 0;
+    }
+
+    .callout.tip {
+      border-left: 4px solid var(--accent-green);
+      background: linear-gradient(90deg, var(--accent-green-soft) 0%, var(--bg-card) 100%);
+    }
+
+    .callout.tip .callout-title {
+      color: var(--accent-green);
+    }
+
+    .callout.info {
+      border-left: 4px solid var(--accent-cyan);
+      background: linear-gradient(90deg, var(--accent-cyan-soft) 0%, var(--bg-card) 100%);
+    }
+
+    .callout.info .callout-title {
+      color: var(--accent-cyan);
+    }
+
+    .callout.gold {
+      border-left: 4px solid var(--accent-gold);
+      background: linear-gradient(90deg, var(--accent-gold-soft) 0%, var(--bg-card) 100%);
+    }
+
+    .callout.gold .callout-title {
+      color: var(--accent-amber);
+    }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 16px 0 26px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      background-color: var(--bg-card);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: var(--bg-elevated);
+      color: var(--text-primary);
+      font-weight: 700;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      vertical-align: top;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Material Encyclopedia Cards */
+    .mat-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 22px 26px;
+      margin-bottom: 22px;
+      transition: border-color 0.2s;
+    }
+
+    .mat-card:hover {
+      border-color: rgba(232, 169, 68, 0.5);
+    }
+
+    .mat-card-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+
+    .mat-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .gpu-badge {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-green);
+      background-color: var(--accent-green-soft);
+      border: 1px solid rgba(61, 220, 151, 0.35);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .mat-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    /* FAQ Cards */
+    .faq-item {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-left: 3px solid var(--accent-gold);
+      border-radius: 8px;
+      padding: 18px 22px;
+      margin-bottom: 16px;
+    }
+
+    .faq-q {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    /* Feature Grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+      margin: 20px 0 28px;
+    }
+
+    .feature-box {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 18px 20px;
+    }
+
+    .feature-box h4 {
+      margin-top: 0;
+      color: var(--accent-amber);
+    }
+
+    .feature-box p {
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 960px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-subtle);
+      }
+      body {
+        flex-direction: column;
+      }
+      .main-content {
+        margin-left: 0;
+        padding: 28px 20px 64px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed Left Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="brand-badge">LaurindoGames • Fab Release</span>
+      <div class="sidebar-title">Desert Sandworm System</div>
+      <div class="sidebar-meta">Version 1.0.0 • Unreal Engine 5.8 (Win64)</div>
+    </div>
+
+    <div class="search-box">
+      <input type="text" id="wikiSearch" class="search-input" placeholder="Filter sections, shaders, properties..." />
+    </div>
+
+    <ul class="nav-list" id="navList">
+      <li class="nav-section-label">Getting Started</li>
+      <li><a class="nav-link active" href="#sec-overview">1. Overview &amp; Key Features</a></li>
+      <li><a class="nav-link" href="#sec-quickstart">2. Quick Start Guide (2 Min)</a></li>
+
+      <li class="nav-section-label">Shaders &amp; GPU Physics</li>
+      <li><a class="nav-link" href="#sec-materials">3. Complete Materials Encyclopedia (11)</a></li>
+      <li><a class="nav-link nav-sublink" href="#mat-1">3.1 M_DesertSand_Dynamic</a></li>
+      <li><a class="nav-link nav-sublink" href="#mat-2">3.2 M_SandPhysics_Stamp</a></li>
+      <li><a class="nav-link nav-sublink" href="#mat-3">3.3 M_SandPhysics_CollapseStep</a></li>
+      <li><a class="nav-link nav-sublink" href="#mat-4">3.4 M_DesertSandworm</a></li>
+      <li><a class="nav-link nav-sublink" href="#mat-5">3.5 M_PP_RoarSonicWave</a></li>
+      <li><a class="nav-link nav-sublink" href="#mat-6">3.6 M_Sandstone_Outcrop</a></li>
+      <li><a class="nav-link nav-sublink" href="#mat-7">3.7 M_SandVFX_DustCloud</a></li>
+      <li><a class="nav-link nav-sublink" href="#mat-8">3.8 M_SandVFX_GroundSandDrift</a></li>
+      <li><a class="nav-link nav-sublink" href="#mat-9">3.9 M_SandVFX_SandClump</a></li>
+      <li><a class="nav-link nav-sublink" href="#mat-10">3.10 M_SandVFX_SandSpray</a></li>
+      <li><a class="nav-link nav-sublink" href="#mat-11">3.11 M_SandVFX_WindSheet</a></li>
+      <li><a class="nav-link" href="#sec-deformer">4. GPU Sand Deformation System</a></li>
+
+      <li class="nav-section-label">AI, Audio &amp; Director</li>
+      <li><a class="nav-link" href="#sec-ai">5. Autonomous AI &amp; Combat</a></li>
+      <li><a class="nav-link" href="#sec-audio">6. Audio &amp; MetaSounds (12)</a></li>
+      <li><a class="nav-link" href="#sec-director">7. Showcase Director</a></li>
+      <li><a class="nav-link" href="#sec-faq">8. Troubleshooting &amp; FAQ</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content" id="wikiContent">
+
+    <!-- Hero Header -->
+    <header class="hero-banner">
+      <h1>Desert Sandworm System — Complete User Guide &amp; Technical Wiki</h1>
+      <p class="hero-subtitle">
+        A beginner-friendly, zero-dependency C++ and HLSL creature and real-time GPU granular sand deformation framework for Unreal Engine 5.8. Feature-complete with a 136-meter rigged Sandworm, 1024&times;1024 Ping-Pong Render Target sand physics, autonomous Free-Roam &amp; Combat AI, 11 optimized materials, 12 bespoke MetaSounds, and a 3-block One-Take Showcase Director.
+      </p>
+      <div class="badge-row">
+        <span class="stat-pill">Engine: <strong>Unreal Engine 5.8 (Win64)</strong></span>
+        <span class="stat-pill">Mount Point: <strong>/DesertSandwormSystem/</strong></span>
+        <span class="stat-pill perf">Measured Frame Rate: <strong>70–95+ FPS</strong></span>
+        <span class="stat-pill perf">Game Thread CPU: <strong>0.27 ms</strong></span>
+        <span class="stat-pill">Sand Resolution: <strong>1024&times;1024 RGBA16f (320m &times; 320m)</strong></span>
+      </div>
+    </header>
+
+    <!-- SECTION 1: OVERVIEW & KEY FEATURES -->
+    <section class="wiki-section" id="sec-overview">
+      <div class="section-header">
+        <span class="section-num">1</span>
+        <h2>Overview &amp; Key Features</h2>
+      </div>
+
+      <p>
+        The <strong>Desert Sandworm System</strong> delivers a colossal 136-meter desert apex predator paired with a physically grounded, GPU-accelerated sand deformation pipeline. Every component is authored in clean, self-contained C++ and HLSL so you can drop the creature or the deformable sand into any project in minutes.
+      </p>
+
+      <div class="feature-grid">
+        <div class="feature-box">
+          <h4>136m Colossal Sandworm &amp; C++ Pose Blender</h4>
+          <p>Includes <code>SK_DesertSandworm</code>, <code>SK_DesertSandworm_PhysicsAsset</code>, 13 animation assets, and <code>USandwormBlendAnimInstance</code> for deterministic C1 Hermite crossfading, spine wave lag (<code>SpineWaveLagFraction = 0.38</code>), and root Z inertia damping without AnimBlueprint complexity.</p>
+        </div>
+        <div class="feature-box">
+          <h4>1024&times;1024 GPU Ping-Pong Sand Physics</h4>
+          <p><code>ASandwormSandDeformer</code> manages a <code>320 m &times; 320 m</code> sliding window (<code>~31.25 cm/texel</code>) using <code>RT_SandPing</code> and <code>RT_SandPong</code>. Simulates deep trench carving (<code>R</code>), raised lateral berms and subsurface waves (<code>G</code>), dark burrows (<code>B</code>), and a 30 Hz angle-of-repose (<code>33&deg;</code>) avalanche collapse pass.</p>
+        </div>
+        <div class="feature-box">
+          <h4>Any Object Carves the Sand</h4>
+          <p>Attach <code>USandDeformInteractorComponent</code> to any Player Character, Vehicle, or Prop—or let <code>bAutoDeformDynamicObjects</code> scan moving primitives automatically. Enforces strict ground contact (<code>4.0 cm</code> tolerance) and scales depth and rim width proportionally to object size and impact speed.</p>
+        </div>
+        <div class="feature-box">
+          <h4>Autonomous Free-Roam &amp; Combat AI</h4>
+          <p><code>USandwormCombatAIComponent</code> drives organic surface slithering, 65–105m underground burrow travel, safe Landscape boundary avoidance (<code>RoamMaxRadiusCm = 45000 cm</code>), vibration &amp; line-of-sight perception, and 4 contextual attacks (<code>Spit</code>, <code>Sweep</code>, <code>BodySlam</code>, <code>Lunge</code>).</p>
+        </div>
+        <div class="feature-box">
+          <h4>Reactive 27-Bone VFX &amp; Roar Shockwave</h4>
+          <p><code>USandwormSandInteractionComponent</code> tracks 27 spine bones against the terrain, drives dynamic armor sand accumulation (<code>SandCoverage</code>), projects screen-space roar shockwaves (<code>M_PP_RoarSonicWave</code>), and spawns 4 primary stateless Niagara VFX systems plus stationary world-space ground wind.</p>
+        </div>
+        <div class="feature-box">
+          <h4>12 MetaSounds &amp; 3-Block Showcase Director</h4>
+          <p>100% original 48 kHz / 16-bit PCM audio wrapped in 12 MetaSounds with 280m logarithmic attenuation (<code>ATT_Sandworm_Colossal</code>) and 9 synchronized delay sliders, showcased by <code>ASandwormShowcaseDirector</code> across a 3-block continuous trailer.</p>
+        </div>
+      </div>
+
+      <h3>System Requirements &amp; Verified Performance Benchmarks</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Specification</th>
+              <th>Technical Detail</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Unreal Engine Version</strong></td>
+              <td><strong>Unreal Engine 5.8.0+</strong> (Compiled with strict IWYU and zero warnings for Editor, Development, and Shipping)</td>
+            </tr>
+            <tr>
+              <td><strong>Target Platform</strong></td>
+              <td><strong>Win64</strong> (DirectX 12 / Shader Model 6)</td>
+            </tr>
+            <tr>
+              <td><strong>Required Engine Plugins</strong></td>
+              <td><code>Niagara</code> and <code>Metasound</code> (Automatically enabled by <code>DesertSandwormSystem.uplugin</code>)</td>
+            </tr>
+            <tr>
+              <td><strong>Real-Time Frame Rate</strong></td>
+              <td><strong><code>70–95+ FPS</code></strong> in standard gameplay / <strong><code>63.5–81.0+ FPS</code></strong> across the full 3-block cinematic showcase at <code>1024&times;1024</code> RT resolution</td>
+            </tr>
+            <tr>
+              <td><strong>CPU Game Thread Cost</strong></td>
+              <td><strong><code>~0.27 ms</code></strong> total C++ tick overhead (strict tick isolation disables dormant creatures outside the active phase)</td>
+            </tr>
+            <tr>
+              <td><strong>GPU Sand Simulation Cost</strong></td>
+              <td><strong>Fixed <code>30 Hz</code> collapse solver</strong> with automatic hibernation after <code>25.0s</code> of rest (<code>0.00 ms</code> GPU cost when idle)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 2: QUICK START GUIDE -->
+    <section class="wiki-section" id="sec-quickstart">
+      <div class="section-header">
+        <span class="section-num">2</span>
+        <h2>Quick Start Guide (Zero Code — 2 Minutes)</h2>
+      </div>
+
+      <p>
+        You do not need any C++ or Blueprint programming experience to use this plugin. Follow the steps below to experience the demo level or drop the Sandworm and deformable sand into your own map.
+      </p>
+
+      <h3>Step 1: Enable the Plugin &amp; Show Plugin Content</h3>
+      <ol>
+        <li>In Unreal Engine 5.8, open <strong>Edit &rarr; Plugins</strong>, search for <strong>Desert Sandworm System</strong>, and ensure <strong>Enabled</strong> is checked.</li>
+        <li>Open the <strong>Content Browser</strong> (<code>Ctrl + Space</code>), click the <strong>Settings</strong> gear icon in the top-right corner, and check <strong>Show Plugin Content</strong>.</li>
+        <li>In the folder tree on the left, navigate to <strong>Plugins &rarr; Desert Sandworm System Content</strong> (mounted at <code>/DesertSandwormSystem/</code>).</li>
+      </ol>
+
+      <h3>Step 2: Play the Included Showcase Map</h3>
+      <ol>
+        <li>Open <code>/DesertSandwormSystem/Maps/L_Sandworm_DesertShowcase</code>.</li>
+        <li>Press <strong>Play</strong> (<code>Alt + P</code>) or <strong>Simulate</strong> (<code>Alt + S</code>).</li>
+        <li>The level's <code>ASandwormShowcaseDirector</code> will automatically play the 3-block <strong>FullOneTakeTrailer</strong> (Boss Cinematic &rarr; Aerial GTA Transition #1 &rarr; 11-Clip Animation Gallery &rarr; Aerial GTA Transition #2 &rarr; Infinite Autonomous AI Drone Demo) with live FPS/GPU telemetry (<code>bShowPerfStats = true</code>).</li>
+      </ol>
+
+      <h3>Step 3: Drag the Sandworm &amp; Deformable Sand into Your Own Map</h3>
+      <ol>
+        <li><strong>Apply the Sand Material to Your Landscape:</strong> Select your <strong>Landscape</strong> actor in the <em>Outliner</em> and assign <code>/DesertSandwormSystem/Materials/MI_DesertSand_Dynamic</code> to its <strong>Landscape Material</strong> slot.</li>
+        <li><strong>(Optional) Add the High-Resolution Follower Patch:</strong> For dense vertex displacement right around the creature even on low-resolution Landscapes, drag <code>/DesertSandwormSystem/Terrain/SM_SandWormFollowerPatch</code> into your level and verify its material is set to <code>MI_DesertSand_FollowerPatch</code>.</li>
+        <li><strong>Place the GPU Sand Deformer:</strong> Open the <strong>Place Actors</strong> panel, search for <code>SandwormSandDeformer</code> (<code>ASandwormSandDeformer</code>), and drag it into your level. It automatically loads <code>RT_SandPing</code>, <code>RT_SandPong</code>, <code>MPC_SandDeformation</code>, <code>M_SandPhysics_Stamp</code>, and <code>M_SandPhysics_CollapseStep</code>.</li>
+        <li><strong>Spawn Your Sandworm:</strong>
+          <ul>
+            <li>Drag <code>/DesertSandwormSystem/Creature/Meshes/SK_DesertSandworm</code> into your level.</li>
+            <li>In the <em>Details</em> panel, click <strong>+ Add</strong> and attach <strong><code>SandwormSandInteractionComponent</code></strong> (drives 27-bone sand carving, Niagara VFX, and MetaSounds).</li>
+            <li>Click <strong>+ Add</strong> again and attach <strong><code>SandwormCombatAIComponent</code></strong> (drives autonomous slithering, burrowing, and combat).</li>
+            <li>Select <code>SandwormCombatAIComponent</code> and check <strong><code>bEnableAutonomousAI = true</code></strong>.</li>
+            <li>Select your <code>SandwormSandDeformer</code> actor and set <strong><code>TargetSandwormActor</code></strong> to your Sandworm. Press <strong>Play</strong>!</li>
+          </ul>
+        </li>
+      </ol>
+
+      <h3>Step 4: Make Any Object (Player, Vehicle, Physics Prop) Carve the Sand</h3>
+      <div class="callout tip">
+        <div class="callout-title">Two Zero-Code Ways to Deform Sand with Any Actor</div>
+        <p>
+          <strong>1. Automatic Scanner (Built-In):</strong> <code>ASandwormSandDeformer</code> has <code>bAutoDeformDynamicObjects = true</code> enabled out of the box. Any movable character, vehicle, or physics prop moving faster than <code>10 cm/s</code> within <code>140 meters</code> of the sand window automatically carves proportional tracks whenever its bottom touches within <code>4 cm</code> of the ground.<br/><br/>
+          <strong>2. Component Attachment (<code>USandDeformInteractorComponent</code>):</strong> For hero actors (like your Player Character, Vehicle, or key physics boulders), select the Actor, click <strong>+ Add</strong> in the <em>Details</em> panel, and add <strong><code>SandDeformInteractor</code></strong> (<code>USandDeformInteractorComponent</code>). It gives you per-object sliders for <code>OverrideRadiusCm</code>, <code>DepthMultiplier</code>, <code>BermMultiplier</code>, and automatically pulls the <code>320 m &times; 320 m</code> sand window to the player when exploring distant dunes!
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 3: COMPLETE MATERIALS & SHADERS ENCYCLOPEDIA -->
+    <section class="wiki-section" id="sec-materials">
+      <div class="section-header">
+        <span class="section-num">3</span>
+        <h2>Complete Materials &amp; Shaders Encyclopedia (All 11 Materials)</h2>
+      </div>
+
+      <p>
+        Below is the complete reference for all <strong>11 Master Materials</strong> included in the plugin, explaining in plain language what each shader does, where it is used, its editable parameters/sliders, and its exact DirectX 12 SM6 GPU cost (Vertex Shader instructions, Pixel Shader instructions, and Texture Samplers).
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Master Material</th>
+              <th>Plugin Path</th>
+              <th>Domain / Blend / Shading</th>
+              <th>GPU Cost (VS / PS / Samplers)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td><code>M_DesertSand_Dynamic</code></td>
+              <td><code>/DesertSandwormSystem/Materials/</code></td>
+              <td>Surface / Opaque / Default Lit</td>
+              <td><strong>254 VS / 498 PS / 3 Samplers</strong></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td><code>M_SandPhysics_Stamp</code></td>
+              <td><code>/DesertSandwormSystem/Materials/</code></td>
+              <td>Surface / Opaque / Unlit (RT Solver)</td>
+              <td><strong>153 VS / 808 PS / 1 Sampler</strong></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td><code>M_SandPhysics_CollapseStep</code></td>
+              <td><code>/DesertSandwormSystem/Materials/</code></td>
+              <td>Surface / Opaque / Unlit (RT Solver)</td>
+              <td><strong>148 VS / 612 PS / 1 Sampler</strong></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td><code>M_DesertSandworm</code></td>
+              <td><code>/DesertSandwormSystem/Creature/Materials/</code></td>
+              <td>Surface / Opaque / Default Lit</td>
+              <td><strong>168 VS / 214 PS / 3 Samplers</strong></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td><code>M_PP_RoarSonicWave</code></td>
+              <td><code>/DesertSandwormSystem/Materials/</code></td>
+              <td>Post Process / Opaque / Unlit</td>
+              <td><strong>148 VS / 91 PS / 1 Sampler</strong></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td><code>M_Sandstone_Outcrop</code></td>
+              <td><code>/DesertSandwormSystem/Materials/</code></td>
+              <td>Surface / Opaque / Default Lit (Nanite)</td>
+              <td><strong>148 VS / 196 PS / 0 Samplers</strong></td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td><code>M_SandVFX_DustCloud</code></td>
+              <td><code>/DesertSandwormSystem/VFX/Materials/</code></td>
+              <td>Surface / Translucent / Unlit</td>
+              <td><strong>312 VS / 238 PS / 1 Sampler</strong></td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td><code>M_SandVFX_GroundSandDrift</code></td>
+              <td><code>/DesertSandwormSystem/VFX/Materials/</code></td>
+              <td>Surface / Translucent / Unlit</td>
+              <td><strong>445 VS / 185 PS / 2 Samplers</strong></td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td><code>M_SandVFX_SandClump</code></td>
+              <td><code>/DesertSandwormSystem/VFX/Materials/</code></td>
+              <td>Surface / Opaque / Default Lit</td>
+              <td><strong>148 VS / 142 PS / 0 Samplers</strong></td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td><code>M_SandVFX_SandSpray</code></td>
+              <td><code>/DesertSandwormSystem/VFX/Materials/</code></td>
+              <td>Surface / Translucent / Unlit</td>
+              <td><strong>312 VS / 238 PS / 1 Sampler</strong></td>
+            </tr>
+            <tr>
+              <td>11</td>
+              <td><code>M_SandVFX_WindSheet</code></td>
+              <td><code>/DesertSandwormSystem/VFX/Materials/</code></td>
+              <td>Surface / Translucent / Default Lit</td>
+              <td><strong>298 VS / 215 PS / 0 Samplers</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 3.1 M_DesertSand_Dynamic -->
+      <div class="mat-card" id="mat-1">
+        <div class="mat-card-header">
+          <div class="mat-title">3.1 <code>M_DesertSand_Dynamic</code> — Deformable Desert Terrain &amp; Follower Patch Shader</div>
+          <span class="gpu-badge">254 VS / 498 PS / 3 Samplers</span>
+        </div>
+        <div class="mat-meta">
+          <strong>Path:</strong> <code>/DesertSandwormSystem/Materials/M_DesertSand_Dynamic</code> &bull;
+          <strong>Instances:</strong> <code>MI_DesertSand_Dynamic</code> (Landscape), <code>MI_DesertSand_FollowerPatch</code> (<code>SM_SandWormFollowerPatch</code>)
+        </div>
+        <p>
+          <strong>What It Does:</strong> Reads the live 1024&times;1024 GPU Render Target (<code>RT_SandDeformation</code>) to displace ground vertices downward in trenches (<code>R</code> channel) and upward along displaced sand berms and subterranean pressure bulges (<code>G</code> channel) via <code>Custom_SandWPO</code>. In the Pixel Shader (<code>Custom_SandNormalWS</code>, <code>Custom_SandAlbedo</code>, <code>Custom_SandRoughSpec</code>), it computes finite-difference 3D normals for trench walls (with an automatic <code>smallImprintBoost</code> so small footprints stay sharp), erases wind ripples wherever sand is churned (<code>A</code> channel), darkens open burrows (<code>B</code> channel), and renders procedural quartz micro-sparkles.
+        </p>
+        <ul>
+          <li><code>RT_SandDeformation</code> (<em>Texture</em>): Points to <code>RT_SandPing</code>. Supplies the live 4-channel deformation data.</li>
+          <li><code>DesertHeightmapTex</code> (<em>Texture</em>): Points to <code>T_DesertHeightmap_RG8</code> so the follower patch conforms to the Landscape elevation.</li>
+          <li><code>bIsFollowerPatch</code> (<em>Scalar <code>0.0</code> or <code>1.0</code></em>): <code>0.0</code> on the Landscape; <code>1.0</code> on <code>SM_SandWormFollowerPatch</code> (activating heightmap snapping and seamless perimeter skirt tucking beneath the Landscape).</li>
+          <li><strong>Global Sliders via <code>MPC_SandDeformation</code>:</strong> <code>MaxCarveDepthCm</code> (<code>620.0</code>), <code>MaxBermHeightCm</code> (<code>340.0</code>), <code>DeformNormalStrength</code> (<code>1.35</code>), <code>BurrowDarkenStrength</code> (<code>0.94</code>), <code>SandEdgeFadeFraction</code> (<code>0.12</code>), <code>SandDeformExtentCm</code> (<code>32000.0</code>), and <code>SandRTResolution</code> (<code>1024.0</code>).</li>
+        </ul>
+      </div>
+
+      <!-- 3.2 M_SandPhysics_Stamp -->
+      <div class="mat-card" id="mat-2">
+        <div class="mat-card-header">
+          <div class="mat-title">3.2 <code>M_SandPhysics_Stamp</code> — GPU Batched Multi-Stamp Brush Solver</div>
+          <span class="gpu-badge">153 VS / 808 PS / 1 Sampler</span>
+        </div>
+        <div class="mat-meta">
+          <strong>Path:</strong> <code>/DesertSandwormSystem/Materials/M_SandPhysics_Stamp</code> &bull;
+          <strong>Used By:</strong> <code>ASandwormSandDeformer::ExecuteStampBatch()</code>
+        </div>
+        <p>
+          <strong>What It Does:</strong> An unlit GPU compute-like brush shader drawn onto the Ping-Pong Render Targets. To minimize draw calls, it evaluates up to <strong>8 stamps simultaneously in a single pass</strong> (<code>StampPosRadius0..7</code> and <code>StampStrength0..7</code>) while also applying incremental texel-quantized window scrolling (<code>UVShift</code>) so moving the deformation window never clears existing tracks.
+        </p>
+        <ul>
+          <li><code>PrevSandRT</code> (<em>Texture</em>): The current source Render Target from the Ping-Pong pair.</li>
+          <li><code>UVShift</code> (<em>Vector</em>): <code>(DeltaU, DeltaV, TexelUV, 0)</code> — scrolls stored deformation pixels when the window recenters.</li>
+          <li><code>WindowCenterWS</code> (<em>Vector</em>): <code>(CenterX, CenterY, DeformExtentCm, 0)</code>.</li>
+          <li><code>StampPosRadius0..7</code> (<em>Vector</em>): <code>(U, V, RadiusUV, Mode)</code> where Mode is <code>0</code> (<code>CarveAndBerm</code>), <code>1</code> (<code>SubsurfaceBulge</code>), <code>2</code> (<code>BurrowHole</code>), or <code>3</code> (<code>ImpactCrater</code>).</li>
+          <li><code>StampStrength0..7</code> (<em>Vector</em>): <code>(CarveStrength, BermStrength, BurrowStrength, BermWidthScale / BulgeStrength)</code>. Setting <code>W = 0.40</code> tightens the raised sand rim right around small dynamic physics objects.</li>
+        </ul>
+      </div>
+
+      <!-- 3.3 M_SandPhysics_CollapseStep -->
+      <div class="mat-card" id="mat-3">
+        <div class="mat-card-header">
+          <div class="mat-title">3.3 <code>M_SandPhysics_CollapseStep</code> — 30 Hz GPU Granular Gravity &amp; Avalanche Solver</div>
+          <span class="gpu-badge">148 VS / 612 PS / 1 Sampler</span>
+        </div>
+        <div class="mat-meta">
+          <strong>Path:</strong> <code>/DesertSandwormSystem/Materials/M_SandPhysics_CollapseStep</code> &bull;
+          <strong>Used By:</strong> <code>ASandwormSandDeformer::ExecuteCollapsePass()</code>
+        </div>
+        <p>
+          <strong>What It Does:</strong> Runs a 3&times;3 neighborhood cellular automaton at a fixed <code>30 Hz</code> frequency. Whenever a carved trench wall or crater rim is steeper than the sand's natural <strong>Angle of Repose</strong> (<code>AngleOfReposeDeg = 33.0&deg;</code>), sand flows down the gradient from the raised berm (<code>G</code>) into the trench (<code>R</code>). Once the slope relaxes below <code>33&deg;</code>, mass flux shuts off completely (zero FP16 terrace drift), preserving footprints and stabilized craters indefinitely.
+        </p>
+        <ul>
+          <li><code>CurrentSandRT</code> (<em>Texture</em>): Source Render Target for the current collapse tick.</li>
+          <li><code>PhysicsParams0</code> (<em>Vector</em>): <code>(TexelUV, StepCm, ClampedDeltaTime, Tan(AngleOfReposeDeg))</code>.</li>
+          <li><code>PhysicsParams1</code> (<em>Vector</em>): <code>(MaxCarveDepthCm, MaxBermHeightCm, AvalancheDiffusionRate, BurrowClosureRate)</code>.</li>
+          <li><code>PhysicsParams2</code> (<em>Vector</em>): <code>(AmbientInfillRate, BulgeSettleRate, SurfaceSmoothStrength, DisturbedMaskDecayRate)</code>.</li>
+          <li><code>KeepOpenUV</code> (<em>Vector</em>): <code>(U, V, RadiusUV, Strength)</code> — keeps an active emergence or submerge funnel open while the worm's body passes through, then releases it so the crater walls avalanche inward.</li>
+        </ul>
+      </div>
+
+      <!-- 3.4 M_DesertSandworm -->
+      <div class="mat-card" id="mat-4">
+        <div class="mat-card-header">
+          <div class="mat-title">3.4 <code>M_DesertSandworm</code> — Creature Chitin Armor, Shells &amp; Teeth PBR Shader</div>
+          <span class="gpu-badge">168 VS / 214 PS / 3 Samplers</span>
+        </div>
+        <div class="mat-meta">
+          <strong>Path:</strong> <code>/DesertSandwormSystem/Creature/Materials/M_DesertSandworm</code> &bull;
+          <strong>Instances:</strong> <code>MI_Sandworm_HeadAndArmor</code>, <code>MI_Sandworm_ArmorShells</code>, <code>MI_Sandworm_TeethAndSpines</code>
+        </div>
+        <p>
+          <strong>What It Does:</strong> Master PBR surface shader for the 136m Sandworm skeletal mesh. Blends high-resolution BaseColor, Normal, and Packed ORM (Ambient Occlusion, Roughness, Metallic) maps with a dynamic, world-up-aligned desert sand layer that coats the monster when emerging from underground and gradually sheds off while above ground.
+        </p>
+        <ul>
+          <li><code>BaseColorTex</code>, <code>NormalTex</code>, <code>ORMTex</code> (<em>Textures</em>): Dedicated texture sets for the head/armor, dorsal shells, and teeth/spines.</li>
+          <li><code>SandCoverage</code> (<em>Scalar <code>0.0..1.0</code></em>): Driven automatically at runtime by <code>USandwormSandInteractionComponent</code> based on underground vs. surface time (<code>MinAboveGroundSandCoverage = 0.22</code>, <code>SandShedRatePerSec = 0.20</code>, <code>SandAccumulateRatePerSec = 0.35</code>).</li>
+          <li><code>SandTintColor</code> (<em>Vector Color</em>): Albedo tint of the clinging desert sand grains.</li>
+          <li><code>SandRoughness</code> (<em>Scalar</em>): Roughness override applied to sand-dusted carapace regions.</li>
+        </ul>
+      </div>
+
+      <!-- 3.5 M_PP_RoarSonicWave -->
+      <div class="mat-card" id="mat-5">
+        <div class="mat-card-header">
+          <div class="mat-title">3.5 <code>M_PP_RoarSonicWave</code> — Screen-Space Acoustic Roar Shockwave</div>
+          <span class="gpu-badge">148 VS / 91 PS / 1 Sampler</span>
+        </div>
+        <div class="mat-meta">
+          <strong>Path:</strong> <code>/DesertSandwormSystem/Materials/M_PP_RoarSonicWave</code> &bull;
+          <strong>Used By:</strong> Level <code>PostProcessVolume</code> + <code>MPC_SandwormFX</code>
+        </div>
+        <p>
+          <strong>What It Does:</strong> An ultra-fast Post Process shader (<code>MD_PostProcess</code>) that reads the projected 2D screen coordinates of the Sandworm's roaring jaws from <code>MPC_SandwormFX</code> and distorts the air with expanding concentric pressure rings and radial RGB chromatic aberration while keeping the center of the worm's mouth sharp.
+        </p>
+        <ul>
+          <li><code>RoarDistortionIntensity</code> (<em>Scalar</em>): Master amplitude of the shockwave refraction (<code>0.0</code> when silent).</li>
+          <li><code>RoarWavePhase</code> (<em>Scalar</em>): Animates the outward travel of the concentric acoustic rings.</li>
+          <li><code>RoarScreenCenterUV</code> (<em>Vector</em>): <code>(ScreenU, ScreenV, FacingMask, DistAtten)</code> — origin of the shockwave on screen.</li>
+          <li><code>RoarFacingMask</code> &amp; <code>RoarDistanceAtten</code> (<em>Scalars</em>): Smoothly attenuate the effect based on camera look angle and distance.</li>
+        </ul>
+      </div>
+
+      <!-- 3.6 M_Sandstone_Outcrop -->
+      <div class="mat-card" id="mat-6">
+        <div class="mat-card-header">
+          <div class="mat-title">3.6 <code>M_Sandstone_Outcrop</code> — 100% Procedural Nanite Sedimentary Rock Shader</div>
+          <span class="gpu-badge">148 VS / 196 PS / 0 Samplers</span>
+        </div>
+        <div class="mat-meta">
+          <strong>Path:</strong> <code>/DesertSandwormSystem/Materials/M_Sandstone_Outcrop</code> &bull;
+          <strong>Usage:</strong> Desert cliffs and rock outcrops (<code>bUsedWithNanite = true</code>)
+        </div>
+        <p>
+          <strong>What It Does:</strong> Synthesizes multi-layered sedimentary sandstone strata (<code>colDark</code>, <code>colWarm</code>) and top-facing accumulated desert dust (<code>colDust</code>) purely from 3D world coordinates (<code>WorldPos</code>) and world normals (<code>BaseNormalWS</code>). Uses zero texture samplers, eliminating UV stretching at any scale.
+        </p>
+      </div>
+
+      <!-- 3.7 M_SandVFX_DustCloud -->
+      <div class="mat-card" id="mat-7">
+        <div class="mat-card-header">
+          <div class="mat-title">3.7 <code>M_SandVFX_DustCloud</code> — Hybrid Volumetric Dust Plume &amp; Sand Clod Shader</div>
+          <span class="gpu-badge">312 VS / 238 PS / 1 Sampler</span>
+        </div>
+        <div class="mat-meta">
+          <strong>Path:</strong> <code>/DesertSandwormSystem/VFX/Materials/M_SandVFX_DustCloud</code> &bull;
+          <strong>Instances:</strong> <code>MI_SandVFX_EruptionDust</code>, <code>MI_SandVFX_EruptionSpray</code>, <code>MI_SandVFX_CollapseDust</code>, <code>MI_SandVFX_CollapseSpray</code>, <code>MI_SandVFX_ShockwaveDust</code>, <code>MI_SandVFX_ShockwaveSpray</code>, <code>MI_SandVFX_SlitherTrail</code>
+        </div>
+        <p>
+          <strong>What It Does:</strong> Powers the plugin's stateless Niagara eruption, collapse, impact shockwave, and slither trail emitters. Computes ballistic radial bursts, upward fountains, parabolic gravity drop, and ground-hugging curtain skirts (which mask the body-to-ground intersection seam) in the Vertex Shader (<code>Custom_HybridSandWPO</code>), and renders dual-layer FBM noise clouds and dense sand clods with directional solar self-shadowing in the Pixel Shader (<code>Custom_HybridSandSurface</code>).
+        </p>
+        <ul>
+          <li><code>NoiseTex</code> (<em>Texture</em>): <code>T_SandNoise_FBM_512</code>.</li>
+          <li><code>SandTint</code> &amp; <code>ClodTint</code> (<em>Vector Colors</em>): Lit outer plume color and shadowed inner sand clod color.</li>
+          <li><code>ClodMix</code> (<em>Scalar <code>0.0..1.0</code></em>): Ratio between soft billowing dust (<code>0.0</code>) and sharp granular sand clumps (<code>1.0</code>).</li>
+          <li><code>OpacityScale</code> (<em>Scalar</em>): Master opacity multiplier.</li>
+          <li><code>DesiredRadiusCm</code>, <code>RadialPushCm</code>, <code>UpwardJetCm</code>, <code>GravityDropCm</code> (<em>Scalars</em>): Control the physical size, outward blast speed, vertical fountain height, and downward gravity arc in centimeters.</li>
+          <li><code>WindDriftVec</code> (<em>Vector</em>): World-space wind carry direction.</li>
+          <li><code>CameraDepthFadeOffset</code> &amp; <code>CameraDepthFadeLength</code> (<em>Scalars</em>): Smooth near-camera fade to prevent clipping.</li>
+        </ul>
+      </div>
+
+      <!-- 3.8 M_SandVFX_GroundSandDrift -->
+      <div class="mat-card" id="mat-8">
+        <div class="mat-card-header">
+          <div class="mat-title">3.8 <code>M_SandVFX_GroundSandDrift</code> — World-Space Tile-Wrapping Ground Wind Veil</div>
+          <span class="gpu-badge">445 VS / 185 PS / 2 Samplers</span>
+        </div>
+        <div class="mat-meta">
+          <strong>Path:</strong> <code>/DesertSandwormSystem/VFX/Materials/M_SandVFX_GroundSandDrift</code> &bull;
+          <strong>Instance:</strong> <code>MI_SandVFX_GroundSandDrift</code> (used by <code>NS_Desert_GroundDriftStateless</code>)
+        </div>
+        <p>
+          <strong>What It Does:</strong> Eliminates camera-dragging wind artifacts by keeping the emitter actor 100% stationary at the world origin while wrapping particles modularly inside a <code>160 m &times; 160 m</code> (<code>TileSizeCm = 16000.0</code>) world-space tile centered on <code>ActiveCameraPosWS</code> (from <code>MPC_SandDeformation</code>). In the Vertex Shader (<code>Custom_GroundSandDriftWPO</code>), each wrapped ribbon samples <code>T_DesertHeightmap_RG8</code> so wind streaks skim <code>6–130 cm</code> above every dune crest and valley.
+        </p>
+        <ul>
+          <li><code>DesertHeightmapTex</code> (<code>T_DesertHeightmap_RG8</code>) &amp; <code>NoiseTex</code> (<code>T_SandNoise_FBM_512</code>).</li>
+          <li><code>TileSizeCm</code> (<em>Scalar, default <code>16000.0</code></em>): World-space wrapping box size around the active camera (with automatic 15% border <code>tileFade</code>).</li>
+          <li><code>RibbonLengthMinCm</code> / <code>RibbonLengthMaxCm</code> (<code>1800..2400</code>) &amp; <code>RibbonHeightMinCm</code> / <code>RibbonHeightMaxCm</code> (<code>180..260</code>): Dimensions of the wind ribbons.</li>
+          <li><code>OpacityScale</code> (<code>0.24</code>), <code>SandTint</code>, <code>WindDriftVec</code>, <code>CameraDepthFadeOffset</code>, <code>CameraDepthFadeLength</code>.</li>
+        </ul>
+      </div>
+
+      <!-- 3.9 M_SandVFX_SandClump -->
+      <div class="mat-card" id="mat-9">
+        <div class="mat-card-header">
+          <div class="mat-title">3.9 <code>M_SandVFX_SandClump</code> — Opaque 3D Mesh Particle Sand Clod Shader</div>
+          <span class="gpu-badge">148 VS / 142 PS / 0 Samplers</span>
+        </div>
+        <div class="mat-meta">
+          <strong>Path:</strong> <code>/DesertSandwormSystem/VFX/Materials/M_SandVFX_SandClump</code> &bull;
+          <strong>Usage:</strong> Niagara 3D mesh particle debris (<code>bUsedWithNiagaraMeshParticles = true</code>)
+        </div>
+        <p>
+          <strong>What It Does:</strong> Ultra-fast opaque Default Lit shader for solid 3D chunks of desert crust ejected during eruptions and body slams. Exposes <code>ClumpColor</code> (<em>Vector</em>) with zero texture lookups.
+        </p>
+      </div>
+
+      <!-- 3.10 M_SandVFX_SandSpray -->
+      <div class="mat-card" id="mat-10">
+        <div class="mat-card-header">
+          <div class="mat-title">3.10 <code>M_SandVFX_SandSpray</code> — High-Velocity Ballistic Sand Jet Shader</div>
+          <span class="gpu-badge">312 VS / 238 PS / 1 Sampler</span>
+        </div>
+        <div class="mat-meta">
+          <strong>Path:</strong> <code>/DesertSandwormSystem/VFX/Materials/M_SandVFX_SandSpray</code> &bull;
+          <strong>Usage:</strong> Explosive granular spray jets on emergence and tail sweeps
+        </div>
+        <p>
+          <strong>What It Does:</strong> Evaluates ballistic vertex trajectory displacement (<code>Custom_HybridSandWPO</code>) and directional solar-backlit granular spray sheets (<code>Custom_HybridSandSurface</code>) using <code>T_SandNoise_FBM_512</code>. Exposes <code>NoiseTex</code>, <code>SandTint</code>, <code>ClodTint</code>, <code>ClodMix</code>, <code>OpacityScale</code>, <code>DesiredRadiusCm</code>, <code>RadialPushCm</code>, <code>UpwardJetCm</code>, <code>GravityDropCm</code>, and <code>WindDriftVec</code>.
+        </p>
+      </div>
+
+      <!-- 3.11 M_SandVFX_WindSheet -->
+      <div class="mat-card" id="mat-11">
+        <div class="mat-card-header">
+          <div class="mat-title">3.11 <code>M_SandVFX_WindSheet</code> — Lit Volumetric Directional Wind Sheet Shader</div>
+          <span class="gpu-badge">298 VS / 215 PS / 0 Samplers</span>
+        </div>
+        <div class="mat-meta">
+          <strong>Path:</strong> <code>/DesertSandwormSystem/VFX/Materials/M_SandVFX_WindSheet</code> &bull;
+          <strong>Instance:</strong> <code>MI_SandVFX_DesertWind</code> (used by <code>NS_Desert_WindAmbient</code>)
+        </div>
+        <p>
+          <strong>What It Does:</strong> A Default Lit (<code>TLM_VolumetricDirectional</code>) translucent shader compatible with both Niagara Sprites and Ribbons (<code>Custom_SandVFXWPO</code> / <code>Custom_SandVFXSurface</code>). Responds automatically to your scene's Directional Light color and intensity while using 100% analytical noise (0 texture samplers). Exposes <code>SandTint</code>, <code>OpacityScale</code>, <code>SoftFadeDistance</code>, <code>CameraDepthFadeOffset</code>, <code>CameraDepthFadeLength</code>, <code>DesiredRadiusCm</code>, <code>RadialPushCm</code>, <code>UpwardJetCm</code>, <code>GravityDropCm</code>, and <code>WindDriftVec</code>.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 4: GPU SAND DEFORMATION SYSTEM -->
+    <section class="wiki-section" id="sec-deformer">
+      <div class="section-header">
+        <span class="section-num">4</span>
+        <h2>GPU Sand Deformation System (<code>ASandwormSandDeformer</code>)</h2>
+      </div>
+
+      <p>
+        <code>ASandwormSandDeformer</code> orchestrates the real-time Ping-Pong GPU simulation across a <strong><code>320 m &times; 320 m</code></strong> sliding window (<code>DeformExtentCm = 32000.0</code>) at <strong><code>1024 &times; 1024</code></strong> resolution (<code>RTF_RGBA16F</code>, <code>~31.25 cm per texel</code>).
+      </p>
+
+      <pre><code>+-----------------------------------------------------------------------------------+
+|                            DESERT LANDSCAPE (2 km &times; 2 km)                         |
+|                                                                                   |
+|            +-------------------------------------------------------+              |
+|            |     SLIDING GPU DEFORMATION WINDOW (320m &times; 320m)      |              |
+|            |     1024&times;1024 RGBA16f Render Targets (~31.25cm/px)    |              |
+|            |                                                       |              |
+|            |    [RT_SandPing]  &lt;=================&gt;  [RT_SandPong]  |              |
+|            |   M_SandPhysics_Stamp              M_SandPhysics_     |              |
+|            |   (Batches 8 Stamps/Pass           CollapseStep       |              |
+|            |    + Texel UVShift)                (30Hz Repose 33&deg;)  |              |
+|            |                           |                           |              |
+|            |                           v                           |              |
+|            |               [MPC_SandDeformation]                   |              |
+|            |               [M_DesertSand_Dynamic]                  |              |
+|            +-------------------------------------------------------+              |
++-----------------------------------------------------------------------------------+</code></pre>
+
+      <h3>Channel Packing in <code>RT_SandPing</code> &amp; <code>RT_SandPong</code></h3>
+      <ul>
+        <li><strong><code>R</code> (Red — Trench Carve Depth):</strong> Downward excavation depth (<code>0.0..1.0</code> maps to <code>0..MaxCarveDepthCm</code>, default <code>620 cm</code>).</li>
+        <li><strong><code>G</code> (Green — Displaced Berm &amp; Subsurface Bulge Height):</strong> Upward sand ridge or underground pressure wave height (<code>0.0..1.0</code> maps to <code>0..MaxBermHeightCm</code>, default <code>340 cm</code>).</li>
+        <li><strong><code>B</code> (Blue — Deep Burrow Tunnel Mask):</strong> Marks open emergence and dive holes (<code>0.0..1.0</code>), darkening the pit interior via <code>BurrowDarkenStrength</code> (<code>0.94</code>).</li>
+        <li><strong><code>A</code> (Alpha — Persistent Churned Sand Mask):</strong> Tracks disturbed zones where wind ripples have been flattened.</li>
+      </ul>
+
+      <h3>Key Sliders &amp; Properties on <code>ASandwormSandDeformer</code></h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Property Name (<code>UPROPERTY</code>)</th>
+              <th>Category</th>
+              <th>Default</th>
+              <th>Visual &amp; Simulation Effect</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>WindowFollowMode</code></td>
+              <td><code>Sand Physics|Area</code></td>
+              <td><code>AutoSmart</code></td>
+              <td><code>AutoSmart</code> anchors on the Sandworm or active ground interaction (never wiping craters when the camera flies high above <code>AutoSmartMaxCameraHeightAboveGroundCm = 2500 cm</code>). Also supports <code>FollowSandworm</code> and <code>FollowActiveCamera</code>.</td>
+            </tr>
+            <tr>
+              <td><code>DeformExtentCm</code></td>
+              <td><code>Sand Physics|Area</code></td>
+              <td><code>32000.0</code></td>
+              <td>World width and length (<code>320 m</code>) of the sliding 1024&times;1024 deformation window.</td>
+            </tr>
+            <tr>
+              <td><code>MaxCarveDepthCm</code></td>
+              <td><code>Sand Physics|Area</code></td>
+              <td><code>620.0</code></td>
+              <td>Maximum physical trench and crater depth in centimeters (<code>6.2 m</code>).</td>
+            </tr>
+            <tr>
+              <td><code>MaxBermHeightCm</code></td>
+              <td><code>Sand Physics|Area</code></td>
+              <td><code>340.0</code></td>
+              <td>Maximum height of pushed lateral sand berms and underground waves (<code>3.4 m</code>).</td>
+            </tr>
+            <tr>
+              <td><code>TrenchWidthMultiplier</code></td>
+              <td><code>Sand Physics|Area</code></td>
+              <td><code>1.28</code></td>
+              <td>Scales stamp radius around the Sandworm's 27 spine bones to match its colossal girth.</td>
+            </tr>
+            <tr>
+              <td><code>DeformNormalStrength</code></td>
+              <td><code>Sand Physics|Area</code></td>
+              <td><code>1.35</code></td>
+              <td>Sharpness of analytical 3D lighting normals on carved trench walls.</td>
+            </tr>
+            <tr>
+              <td><code>BurrowDarkenStrength</code></td>
+              <td><code>Sand Physics|Area</code></td>
+              <td><code>0.94</code></td>
+              <td>Darkness of the deep subterranean shadow inside open emergence and submerge holes.</td>
+            </tr>
+            <tr>
+              <td><code>AngleOfReposeDeg</code></td>
+              <td><code>Sand Physics|Simulation</code></td>
+              <td><code>33.0</code></td>
+              <td>Natural critical slope angle of dry desert sand. Slopes steeper than <code>33&deg;</code> avalanche downward until they stabilize.</td>
+            </tr>
+            <tr>
+              <td><code>AvalancheDiffusionRate</code></td>
+              <td><code>Sand Physics|Simulation</code></td>
+              <td><code>10.5</code></td>
+              <td>Speed of lateral sand mass transfer during active avalanches.</td>
+            </tr>
+            <tr>
+              <td><code>BurrowClosureRate</code></td>
+              <td><code>Sand Physics|Simulation</code></td>
+              <td><code>0.28</code></td>
+              <td>How fast deep emergence/submerge craters collapse inward after the tail exits.</td>
+            </tr>
+            <tr>
+              <td><code>CollapseStepFrequencyHz</code></td>
+              <td><code>Sand Physics|Simulation</code></td>
+              <td><code>30.0</code></td>
+              <td>Fixed GPU tick rate for <code>M_SandPhysics_CollapseStep</code> (sleeps automatically after <code>CollapseIdleSleepSeconds = 25.0s</code>).</td>
+            </tr>
+            <tr>
+              <td><code>bAutoDeformDynamicObjects</code></td>
+              <td><code>Sand Physics|DynamicObjects</code></td>
+              <td><code>true</code></td>
+              <td>Automatically scans within <code>DynamicObjectScanRadiusCm</code> (<code>14000 cm</code>) and carves proportional tracks under moving physics objects and characters touching within <code>4 cm</code> of the ground.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 5: AUTONOMOUS AI & COMBAT -->
+    <section class="wiki-section" id="sec-ai">
+      <div class="section-header">
+        <span class="section-num">5</span>
+        <h2>Autonomous AI &amp; Combat (<code>USandwormCombatAIComponent</code>)</h2>
+      </div>
+
+      <p>
+        <code>USandwormCombatAIComponent</code> provides a complete C++ state machine for both unscripted open-desert exploration (<strong>Free-Roam AI</strong>) and reactive boss encounters (<strong>Combat AI</strong>), driving smooth transitions through <code>USandwormBlendAnimInstance</code>.
+      </p>
+
+      <h3>All 10 AI States (<code>ESandwormCombatAIState</code>)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>State Enum</th>
+              <th>Mode</th>
+              <th>Behavior Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>PatrolSlither</code> (0)</td>
+              <td>Patrol</td>
+              <td>Circles smoothly around <code>HomeLocation</code> within <code>PatrolRadiusCm</code> (<code>9000 cm</code>) while scanning for vibrations and line-of-sight targets.</td>
+            </tr>
+            <tr>
+              <td><code>SubsurfaceStalk</code> (1)</td>
+              <td>Combat</td>
+              <td>Dives and pursues a detected target underground at <code>SubsurfaceSpeedCmPerSec = 2400 cm/s</code>, pushing up a live <code>SubsurfaceBulge</code> wave on the sand above.</td>
+            </tr>
+            <tr>
+              <td><code>ThreatAlert</code> (2)</td>
+              <td>Combat</td>
+              <td>Breaches with <code>AnimEmergeV2</code> or pivots toward a newly detected threat and unleashes an intimidating <code>AnimRoar</code> before attacking.</td>
+            </tr>
+            <tr>
+              <td><code>HitReaction</code> (3)</td>
+              <td>Combat</td>
+              <td>Triggered when receiving heavy damage via <code>OnTakeAnyDamage</code>, crossfading into <code>AnimHitReact</code> with anti-stunlock cooldown protection.</td>
+            </tr>
+            <tr>
+              <td><code>CombatAttack</code> (4)</td>
+              <td>Combat</td>
+              <td>Executes contextual attacks (<code>ESandwormAttackType</code>): <strong><code>Spit</code></strong> (<code>AnimAttackSpit</code> at range <code>&ge; SpitRangeMinCm = 4800 cm</code>), <strong><code>Sweep</code></strong> (<code>AnimAttackSweep</code> when flanked past <code>FlankAngleThresholdDeg = 38&deg;</code>), <strong><code>BodySlam</code></strong> (<code>AnimAttackBodySlam</code>), or <strong><code>Lunge</code></strong> (<code>AnimAttackLunge</code>).</td>
+            </tr>
+            <tr>
+              <td><code>BurrowAmbush</code> (5)</td>
+              <td>Combat</td>
+              <td>3-stage subterranean tactical reposition (<code>Submerging</code> &rarr; <code>UndergroundReposition</code> &rarr; <code>Emerging</code>) after consecutive surface strikes.</td>
+            </tr>
+            <tr>
+              <td><code>Dead</code> (6)</td>
+              <td>Combat</td>
+              <td>Entered when <code>CurrentHealth &le; 0.0f</code>. Plays <code>AnimDeath</code> with seismic collapse audio/VFX and disables further movement.</td>
+            </tr>
+            <tr>
+              <td><code>AutonomousSlither</code> (7)</td>
+              <td>Free-Roam</td>
+              <td>Unscripted surface slithering across the dunes at <code>SurfaceSlitherSpeedCmPerSec = 1650 cm/s</code> for <code>7.0–14.0s</code> (<code>FreeRoamSlitherMinDuration</code>..<code>MaxDuration</code>).</td>
+            </tr>
+            <tr>
+              <td><code>AutonomousBurrowTravel</code> (8)</td>
+              <td>Free-Roam</td>
+              <td>Dives underground (<code>AnimSubmerge</code>), travels <code>65–105 meters</code> (<code>FreeRoamBurrowMinDistCm = 6500</code>..<code>10500</code>) beneath the dunes while raising a surface sand wave, and erupts (<code>AnimEmergeV2</code>) at the new waypoint.</td>
+            </tr>
+            <tr>
+              <td><code>AutonomousSurveyOrRoar</code> (9)</td>
+              <td>Free-Roam</td>
+              <td>Rears up to survey the desert (<code>AnimIdleCombat</code>) or bellows (<code>AnimRoar</code>) before selecting the next organic destination.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Safe Landscape Patrol Area &amp; Soft Boundary Avoidance</h3>
+      <p>
+        On <code>BeginPlay</code>, the AI automatically measures your Landscape bounds and insets them by <strong><code>LandscapeEdgeMarginCm = 25000.0 cm</code> (250 m)</strong> while also clamping exploration within <strong><code>RoamMaxRadiusCm = 45000.0 cm</code> (450 m)</strong> around <code>RoamBoundsCenterXY</code>. If the worm nears the safe border, <code>ApplySoftBoundaryAvoidance()</code> smoothly curves its heading back toward the interior so it never leaves your playable terrain.
+      </p>
+
+      <h3>Ready-to-Use Blueprint &amp; C++ Combat Integration Functions</h3>
+      <ul>
+        <li><strong>Native Unreal Damage (<code>ApplyDamage</code>):</strong> The component automatically binds to the owning Sandworm actor's <code>OnTakeAnyDamage</code> delegate and configures combat query collision on <code>SK_DesertSandworm_PhysicsAsset</code>. Simply call Unreal's standard <code>ApplyDamage</code> node on the Sandworm Actor from any projectile, explosion, or melee trace to reduce <code>CurrentHealth</code> (default <code>MaxHealth = 2500.0</code>) and trigger combat, hit reactions, or death!</li>
+        <li><code>TriggerTestThreat(FVector Location)</code> (<em>CallInEditor / BlueprintCallable</em>): Simulates a target vibration at <code>Location</code> (or 35m ahead if zero) to immediately test combat aggro.</li>
+        <li><code>ApplyTestDamage(float Amount = 250.0f, AActor* Instigator = nullptr)</code> (<em>CallInEditor / BlueprintCallable</em>): Applies instant test damage in Editor or PIE.</li>
+        <li><code>SetAutonomousAIEnabled(bool bEnabled, bool bResetBehavior = true)</code> (<em>BlueprintCallable</em>): Starts or stops autonomous AI at runtime.</li>
+        <li><code>SetRoamBounds(FVector2D InCenterXY, float InMaxRadiusCm = 45000.0f)</code> (<em>BlueprintCallable</em>): Dynamically updates the safe patrol area.</li>
+        <li><code>ForceAutonomousBurrowNow()</code> (<em>CallInEditor / BlueprintCallable</em>): Forces an immediate dive &rarr; underground travel &rarr; eruption cycle.</li>
+        <li><code>GetHealthNormalized()</code>, <code>GetCurrentState()</code>, <code>GetCurrentAIStateName()</code>, <code>IsUnderground()</code>, <code>GetAITrackFocusPoint()</code> (<em>BlueprintPure</em>): Ready for UMG Boss Health bars and camera tracking.</li>
+        <li><code>OnStateChanged</code> (<em>BlueprintAssignable</em>): Multicast delegate firing <code>(OldState, NewState)</code> on every state transition.</li>
+      </ul>
+    </section>
+
+    <!-- SECTION 6: AUDIO & METASOUNDS -->
+    <section class="wiki-section" id="sec-audio">
+      <div class="section-header">
+        <span class="section-num">6</span>
+        <h2>Audio &amp; MetaSounds (<code>USandwormSandInteractionComponent</code>)</h2>
+      </div>
+
+      <p>
+        Every audio asset in the plugin is 100% original (<code>48 kHz, 16-bit PCM</code>, normalized to <code>-1.00 dBFS</code> with zero clipping) and wrapped in a modular <strong>MetaSound</strong> (<code>/DesertSandwormSystem/Audio/MetaSounds/MS_Sandworm_*</code>) exposing <code>PitchShiftSemitones</code>, <code>CutoffFrequencyHz</code>, and <code>GainScale</code>.
+      </p>
+
+      <h3>Complete Table of All 12 MetaSounds</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>MetaSound Asset</th>
+              <th>Wave Asset</th>
+              <th>Format / Duration</th>
+              <th>Details Panel Slot</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td><code>MS_Sandworm_Roar</code></td>
+              <td><code>SFX_Sandworm_Roar</code></td>
+              <td>Mono / <code>5.45s</code></td>
+              <td><code>SFX_Roar</code></td>
+              <td>Guttural leviathan roar with <code>32–65 Hz</code> sub-bass braam and desert air shockwave.</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td><code>MS_Sandworm_Emerge</code></td>
+              <td><code>SFX_Sandworm_Emerge</code></td>
+              <td>Mono / <code>3.30s</code></td>
+              <td><code>SFX_Emerge</code></td>
+              <td>Subterranean ground explosion followed by a 3-second sand cascade off the armor shells.</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td><code>MS_Sandworm_Submerge</code></td>
+              <td><code>SFX_Sandworm_Submerge</code></td>
+              <td>Mono / <code>3.50s</code></td>
+              <td><code>SFX_Submerge</code></td>
+              <td>Heavy downward sand suction (<code>115 &rarr; 27 Hz</code>) and crater collapse rumble.</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td><code>MS_Sandworm_Attack_BodySlam</code></td>
+              <td><code>SFX_Sandworm_Attack_BodySlam</code></td>
+              <td>Mono / <code>2.35s</code></td>
+              <td><code>SFX_AttackBodySlam</code></td>
+              <td>Seismic belly slam impact with a <code>130 &rarr; 26 Hz</code> sub drop and displaced sand burst.</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td><code>MS_Sandworm_Attack_Whoosh</code></td>
+              <td><code>SFX_Sandworm_Attack_Whoosh</code></td>
+              <td>Mono / <code>1.30s</code></td>
+              <td><code>SFX_AttackWhoosh</code></td>
+              <td>Doppler air displacement whoosh (<code>130 &rarr; 680 &rarr; 140 Hz</code>) for Sweep and Lunge attacks.</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td><code>MS_Sandworm_Attack_Spit</code></td>
+              <td><code>SFX_Sandworm_Attack_Spit</code></td>
+              <td>Mono / <code>1.42s</code></td>
+              <td><code>SFX_AttackSpit</code></td>
+              <td>Viscous acid/venom expulsion transient and resonant hiss.</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td><code>MS_Sandworm_HitReact</code></td>
+              <td><code>SFX_Sandworm_HitReact</code></td>
+              <td>Mono / <code>1.45s</code></td>
+              <td><code>SFX_HitReact</code></td>
+              <td>Chitinous carapace crack combined with a low guttural pain grunt.</td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td><code>MS_Sandworm_Death</code></td>
+              <td><code>SFX_Sandworm_Death</code></td>
+              <td>Mono / <code>5.10s</code></td>
+              <td><code>SFX_Death</code></td>
+              <td>Agonizing pitch-dropping roar culminating in a seismic ground collapse at <code>4.38s</code>.</td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td><code>MS_Sandworm_Slither_Loop</code></td>
+              <td><code>SFX_Sandworm_Slither_Loop</code></td>
+              <td>Mono / <code>6.00s</code> (Loop)</td>
+              <td><code>SFX_SlitherLoop</code></td>
+              <td>Seamless chitin-on-sand friction loop modulated continuously by real-time surface spine speed.</td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td><code>MS_Sandworm_Subsurface_Loop</code></td>
+              <td><code>SFX_Sandworm_Subsurface_Loop</code></td>
+              <td>Mono / <code>6.00s</code> (Loop)</td>
+              <td><code>SFX_SubsurfaceLoop</code></td>
+              <td>Seamless <code>30–65 Hz</code> tectonic sub-bass rumble while burrowing beneath the terrain.</td>
+            </tr>
+            <tr>
+              <td>11</td>
+              <td><code>MS_Sandworm_DesertWind_Loop</code></td>
+              <td><code>SFX_DesertWind_Loop</code></td>
+              <td>Stereo / <code>12.00s</code> (Loop)</td>
+              <td><code>SFX_DesertWindLoop</code> (Director)</td>
+              <td>Click-free FFT spectral desert wind loop (<code>48–720 Hz</code>) with slow harmonic gusts.</td>
+            </tr>
+            <tr>
+              <td>12</td>
+              <td><code>MS_Sandworm_Trailer_GTATransition</code></td>
+              <td><code>SFX_Trailer_GTATransition</code></td>
+              <td>Stereo / <code>2.80s</code></td>
+              <td><code>SFX_TrailerGTATransition</code> (Director)</td>
+              <td>3 camera step punches on ascent, high-altitude stereo whoosh, and 3 step punches on descent.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Colossal Spatial Attenuation (<code>ATT_Sandworm_Colossal</code>) &amp; Easy Audio Swapping</h3>
+      <p>
+        Assigned to <code>SandwormSoundAttenuation</code> on <code>USandwormSandInteractionComponent</code>, <code>/DesertSandwormSystem/Audio/ATT_Sandworm_Colossal</code> is tuned for a 136-meter creature: <strong>Logarithmic falloff</strong>, <strong><code>InnerRadius = 3500 cm</code> (35 m)</strong>, <strong><code>FalloffDistance = 28000 cm</code> (280 m)</strong>, <code>NonSpatializedRadiusStart = 1200 cm</code>, <code>StereoSpread = 450 cm</code>, and distance Low-Pass Air Absorption (<code>20000 Hz &rarr; 2600 Hz</code>). To swap any sound, simply select <code>SandwormSandInteractionComponent</code> on your Sandworm actor, expand <strong><code>Sandworm | Audio</code></strong> in the <em>Details</em> panel, and pick any MetaSound, SoundCue, or SoundWave in the <code>SFX_*</code> slots.
+      </p>
+
+      <h3>The 9 Synchronized Audio Delay Sliders (<code>Sandworm | Audio</code>)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Property Name (<code>UPROPERTY</code>)</th>
+              <th>Default</th>
+              <th>Animation Sequence (Length)</th>
+              <th>Synchronized Visual Trigger Point</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>RoarDelaySec</code></td>
+              <td><strong><code>0.62s</code></strong></td>
+              <td><code>AS_Sandworm_Roar</code> (<code>6.25s</code>)</td>
+              <td>Exact frame (<code>NormT = 0.100</code>) when the colossal jaws snap open.</td>
+            </tr>
+            <tr>
+              <td><code>BodySlamImpactDelaySec</code></td>
+              <td><strong><code>4.95s</code></strong></td>
+              <td><code>AS_Sandworm_Attack_Body_Slam</code> (<code>7.292s</code>)</td>
+              <td>Pre-triggers <code>0.15s</code> ahead of the <code>5.10s</code> ground slam so peak sub-bass hits on impact.</td>
+            </tr>
+            <tr>
+              <td><code>SpitDelaySec</code></td>
+              <td><strong><code>1.82s</code></strong></td>
+              <td><code>AS_Sandworm_Attack_Spit</code> (<code>5.208s</code>)</td>
+              <td>Forward head snap during venom expulsion (<code>NormT = 0.350</code>).</td>
+            </tr>
+            <tr>
+              <td><code>SweepWhooshDelaySec</code></td>
+              <td><strong><code>2.00s</code></strong></td>
+              <td><code>AS_Sandworm_Attack_Sweep</code> (<code>6.042s</code>)</td>
+              <td>Peak lateral tail/body sweep acceleration (<code>NormT = 0.331</code>).</td>
+            </tr>
+            <tr>
+              <td><code>LungeWhooshDelaySec</code></td>
+              <td><strong><code>1.35s</code></strong></td>
+              <td><code>Anim_Sandworm_Attack_Lunge</code> (<code>5.00s</code>)</td>
+              <td>Forward strike lunge acceleration (<code>NormT = 0.270</code>).</td>
+            </tr>
+            <tr>
+              <td><code>HitReactDelaySec</code></td>
+              <td><strong><code>0.13s</code></strong></td>
+              <td><code>AS_Sandworm_Hit_React</code> (<code>3.125s</code>)</td>
+              <td>Initial flinch recoil on impact (<code>NormT = 0.042</code>).</td>
+            </tr>
+            <tr>
+              <td><code>EmergeDelaySec</code></td>
+              <td><strong><code>0.38s</code></strong></td>
+              <td><code>AS_Sandworm_Emerge_V2</code> (<code>6.25s</code>)</td>
+              <td>Pre-triggers <code>0.12s</code> before the <code>0.50s</code> surface rupture.</td>
+            </tr>
+            <tr>
+              <td><code>SubmergeDelaySec</code></td>
+              <td><strong><code>1.95s</code></strong></td>
+              <td><code>AS_Sandworm_Submerge</code> (<code>6.25s</code>)</td>
+              <td>Vertical dive entry into the burrow funnel (<code>NormT = 0.312</code>).</td>
+            </tr>
+            <tr>
+              <td><code>DeathDelaySec</code></td>
+              <td><strong><code>0.55s</code></strong></td>
+              <td><code>AS_Sandworm_Death</code> (<code>7.50s</code>)</td>
+              <td>Starts the 5.10s death bellow so its final seismic thud hits at the <code>4.38s</code> collapse.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 7: SHOWCASE DIRECTOR -->
+    <section class="wiki-section" id="sec-director">
+      <div class="section-header">
+        <span class="section-num">7</span>
+        <h2>Showcase Director (<code>ASandwormShowcaseDirector</code>)</h2>
+      </div>
+
+      <p>
+        <code>ASandwormShowcaseDirector</code> runs the cinematic presentation in <code>L_Sandworm_DesertShowcase</code>, managing camera choreography, strict CPU/GPU tick isolation between the 3 desert zones, pure-Slate title overlays, and aerial transitions.
+      </p>
+
+      <ul>
+        <li><strong><code>ShowcaseMode</code> (<code>ESandwormShowcaseMode</code>):</strong>
+          <ul>
+            <li><code>FullOneTakeTrailer</code> (<em>Default</em>): Plays <strong>Block 1 (34s Boss Cinematic)</strong> &rarr; <strong>GTA Transition #1 (2.8s)</strong> &rarr; <strong>Block 2 (~28.7s 11-Clip Animation Gallery)</strong> &rarr; <strong>GTA Transition #2 (2.8s)</strong> &rarr; <strong>Block 3 (Infinite Autonomous Free-Roam AI with Adaptive Drone Camera)</strong>.</li>
+            <li><code>BossCinematicOnly</code>: Loops the 5-act 54-second Boss Arena choreography (<code>bResetSandOnLoop = false</code> preserves cumulative craters across loops).</li>
+            <li><code>FreeRoamAIDemo</code>: Jumps straight into Block 3 for unscripted autonomous AI exploration.</li>
+          </ul>
+        </li>
+        <li><strong><code>bShowPerfStats</code> (Default <code>true</code>):</strong> Automatically executes <code>stat fps</code> and <code>stat unit</code> on <code>BeginPlay</code> (checking <code>UGameViewportClient::IsStatEnabled</code> so it never toggles off already-active stats). Uncheck it in the <em>Details</em> panel under <code>Sandworm | Showcase</code> to hide the telemetry overlay with one click.</li>
+        <li><strong><code>GalleryEntries</code> (<code>TArray&lt;FSandwormGalleryEntry&gt;</code>):</strong> 11 customizable gallery slots (<code>IDLE COMBAT</code>, <code>SLITHER</code>, <code>ROAR</code>, <code>ATTACK SWEEP</code>, <code>ATTACK BODY SLAM</code>, <code>ATTACK LUNGE</code>, <code>ATTACK SPIT</code>, <code>HIT REACT</code>, <code>EMERGE V2</code>, <code>SUBMERGE</code>, <code>DEATH</code>) with per-clip orbit angles, distances (<code>10800–12800 cm</code>), heights (<code>2500–3200 cm</code>), and focal lengths (<code>28 mm</code>).</li>
+        <li><strong>3-Step Aerial GTA Transitions (<code>GTATransitionDuration = 2.80s</code>):</strong> Ascends in 3 snappy exponential steps (<code>GTAStep1HeightCm = 2500</code>, <code>GTAStep2HeightCm = 8500</code>, <code>GTAStep3HeightCm = 20000</code>), arcs across the desert (<code>+3500 cm</code>) while seamlessly shifting the Sand Deformer target and window anchor at mid-flight, and descends in 3 steps into the next zone.</li>
+      </ul>
+    </section>
+
+    <!-- SECTION 8: TROUBLESHOOTING & FAQ -->
+    <section class="wiki-section" id="sec-faq">
+      <div class="section-header">
+        <span class="section-num">8</span>
+        <h2>Troubleshooting &amp; FAQ</h2>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">1. I placed the Sandworm and ASandwormSandDeformer in my own map, but the ground doesn't deform. Why?</div>
+        <p>Verify three things: (1) Your Landscape uses <code>MI_DesertSand_Dynamic</code> (or you placed <code>SM_SandWormFollowerPatch</code> with <code>MI_DesertSand_FollowerPatch</code>); (2) <code>TargetSandwormActor</code> and <code>TargetLandscape</code> are assigned on your <code>ASandwormSandDeformer</code>; and (3) Your Sandworm has <code>USandwormSandInteractionComponent</code> attached (or <code>bTrackBonesAutomatically = true</code> on the deformer).</p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">2. Why isn't my physics cube or player character leaving tracks in the sand?</div>
+        <p>The system enforces strict physical ground contact (<code>DynamicObjectContactToleranceCm = 4.0 cm</code>) so airborne objects never dent the sand. Make sure the bottom of your object's collision primitive touches within <code>4 cm</code> of the Landscape surface, its Mobility is <strong>Movable</strong>, and you attach <code>USandDeformInteractorComponent</code> if you want the <code>320 m &times; 320 m</code> window to follow your player far away from the Sandworm.</p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">3. How do I use my own Player Character instead of the automated Showcase Camera in L_Sandworm_DesertShowcase?</div>
+        <p>Select <code>SandwormShowcaseDirector</code> in the level <em>Outliner</em> and uncheck <code>bAutoPlayOnBeginPlay</code> (or uncheck <code>bDriveCinematicCamera</code>, <code>bAutoPossessShowcaseCameraOnBeginPlay</code>, <code>bHidePlayerPawnDuringShowcase</code>, and <code>bHideGameHUDDuringShowcase</code> under <code>Showcase | Camera</code>).</p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">4. How do I hide the green FPS and Frame/GPU timing stats in the top-right corner?</div>
+        <p>Select <code>SandwormShowcaseDirector</code> in the <em>Outliner</em>, scroll to <strong><code>Sandworm | Showcase</code></strong> in the <em>Details</em> panel, and uncheck <strong><code>bShowPerfStats</code></strong>.</p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">5. Why doesn't the sand deformation window follow my camera when I fly 100+ meters high up in the air?</div>
+        <p>In <code>AutoSmart</code> mode, <code>AutoSmartMaxCameraHeightAboveGroundCm = 2500.0 cm</code> (25 m) prevents a high-altitude flying camera from pulling the deformation window away from the Sandworm's arena, keeping the worm's craters 100% preserved when viewed from afar. To force the window to always follow the camera at any altitude, switch <code>WindowFollowMode</code> on <code>ASandwormSandDeformer</code> to <code>FollowActiveCamera</code>.</p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">6. Why don't I see the screen refraction shockwave when the Sandworm roars in my custom map?</div>
+        <p>Add a <strong>PostProcessVolume</strong> to your level, check <strong>Infinite Extent (Unbound)</strong>, and add <code>/DesertSandwormSystem/Materials/M_PP_RoarSonicWave</code> to <strong>Rendering Features &rarr; Post Process Materials &rarr; Array</strong>.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Offline client-side search filter & active nav highlighting
+    (function () {
+      const searchInput = document.getElementById('wikiSearch');
+      const sections = document.querySelectorAll('.wiki-section, .mat-card, .faq-item');
+      const navLinks = document.querySelectorAll('.nav-link');
+
+      if (searchInput) {
+        searchInput.addEventListener('input', function (e) {
+          const query = e.target.value.trim().toLowerCase();
+          document.querySelectorAll('.wiki-section').forEach(function (sec) {
+            if (!query) {
+              sec.style.display = '';
+              return;
+            }
+            const text = sec.textContent.toLowerCase();
+            sec.style.display = text.indexOf(query) !== -1 ? '' : 'none';
+          });
+        });
+      }
+
+      window.addEventListener('scroll', function () {
+        let currentId = '';
+        document.querySelectorAll('.wiki-section, .mat-card').forEach(function (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 140) {
+            currentId = el.getAttribute('id');
+          }
+        });
+        if (currentId) {
+          navLinks.forEach(function (link) {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + currentId);
+          });
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
